@@ -1,58 +1,73 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <!--    <div v-for="(item,index) in passData" :key="index">-->
+    <!--      <input type="text" v-model="item.name">-->
+    <!--    </div>-->
+    <!--    <Editor :content="item.value" @changeData="((val)=>{ changeDataFun(val,item)}) "></Editor>-->
+
+    <!--    <button @click="clickFun">点击2</button>-->
+    <!--    {{ obj }}-->
+    <input type="file" id="file" />
+    <img src="" id="imgPreview">
+    {{ obj.value }}
   </div>
+
+
 </template>
 
 <script>
+// import Editor from "@/components/editor";
+
 export default {
   name: 'HelloWorld',
+  data() {
+    return {
+      list: [
+        {name: 'lihao', value: '1111'},
+        {name: 'lihao2', value: '222'},
+        {name: 'lihao3', value: '333'},
+        {name: 'lihao4', value: '444'},
+      ],
+      active: 0,
+    }
+  },
   props: {
-    msg: String
+    msg: String,
+    passData: Array,
+    obj: Object,
+  },
+  watch: {
+    obj: {
+      handler: function () {
+        console.log('inin-watch')
+      },
+    },
+  },
+  mounted() {
+    document.querySelector('#file').addEventListener('change', (fileChoosed) => {
+      const reader = new FileReader();
+      console.log(fileChoosed.target.files[0])
+      reader.readAsDataURL(fileChoosed.target.files[0]);//发起异步请求
+      reader.onload = function (readRes) {
+        console.log('加载完成', readRes.target.result)
+      }
+    })
+  },
+  components: {},
+  methods: {
+    changeNum(num) {
+      this.active = num
+    },
+    clickFun() {
+      this.$emit('objFun', '07')
+    },
+    changeDataFun(val, item) {
+      item.value = val;
+    }
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 </style>
+
